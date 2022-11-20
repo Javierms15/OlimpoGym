@@ -5,6 +5,8 @@
  */
 package view;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,6 +16,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -152,6 +155,11 @@ public class MainFrame extends javax.swing.JFrame {
         jButton4.setText("Eliminar cliente");
 
         jButton5.setText("Exportar a Excel");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Filtrar");
 
@@ -227,6 +235,41 @@ public class MainFrame extends javax.swing.JFrame {
         datos.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        
+        String filename = "E:\\Excel exportado.csv";
+        try {
+            FileWriter fw=new FileWriter(filename);
+            pst=con.prepareStatement("SELECT * FROM cliente");
+            rs=pst.executeQuery();
+            fw.append("NOMBRE, APELLIDOS, ESTATUS, TELEFONO");
+            fw.append("\n");
+            while(rs.next()){
+                
+                fw.append(rs.getString(2));
+                fw.append(", ");
+                fw.append(rs.getString(3));
+                fw.append(", ");
+                fw.append(rs.getString(4));
+                fw.append(", ");
+                fw.append(String.valueOf( rs.getInt(6)));
+
+                fw.append("\n");
+            }
+            JOptionPane.showMessageDialog(this,"Archivo Excel generado con éxito");
+            fw.flush();
+            fw.close();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments

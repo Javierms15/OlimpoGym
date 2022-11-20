@@ -5,6 +5,8 @@
  */
 package olimpogym;
 
+import view.MainFrame;
+
 /**
  *
  * @author javie
@@ -16,6 +18,8 @@ public class OlimpoGym {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        MainFrame main=new MainFrame();
+        main.setVisible(true);
     }
     
 }
