@@ -125,9 +125,14 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Malgun Gothic Semilight", 1, 36)); // NOI18N
         jLabel1.setText("Lista de clientes");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "IdCliente", "Nombre", "Apellidos", "Estatus", "PrecioMatricula", "Telefono", "DNI", "Direccion" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "IdCliente", "Nombre", "Apellidos", "Estatus", "PrecioMatricula", "Telefono", "DNI", "Direccion" }));
 
         jButton1.setText("Buscar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -296,6 +301,75 @@ public class MainFrame extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jButton4ActionPerformed
+    //buscar
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int q;
+        try{
+        String info=jComboBox1.getSelectedItem().toString();
+        if(info.equals("IdCliente")){
+            int id=Integer.parseInt(jTextField1.getText());
+        pst=con.prepareStatement("SELECT * FROM cliente WHERE idcliente =?");
+        pst.setInt(1,id);
+        }else if(info.equals("Nombre")){
+            String n= jTextField1.getText();
+            pst=con.prepareStatement("SELECT * FROM cliente WHERE Nombre LIKE ?");
+            pst.setString(1,n);
+        }else if(info.equals("Apellidos")){
+            String n= jTextField1.getText();
+            pst=con.prepareStatement("SELECT * FROM cliente WHERE Apellidos LIKE ?");
+            pst.setString(1,n);
+        }else if(info.equals("Estatus")){
+            String n= jTextField1.getText();
+            pst=con.prepareStatement("SELECT * FROM cliente WHERE Estatus LIKE ?");
+            pst.setString(1,n);
+        }else if(info.equals("PrecioMatricula")){
+             int id=Integer.parseInt(jTextField1.getText());
+        pst=con.prepareStatement("SELECT * FROM cliente WHERE PrecioMatricula =?");
+        pst.setInt(1,id);
+        }else if(info.equals("Telefono")){
+             int id=Integer.parseInt(jTextField1.getText());
+        pst=con.prepareStatement("SELECT * FROM cliente WHERE Telefono =?");
+        pst.setInt(1,id);
+        }else if(info.equals("DNI")){
+            String n= jTextField1.getText();
+            pst=con.prepareStatement("SELECT * FROM cliente WHERE DNI LIKE ?");
+            pst.setString(1,n);
+        }else if(info.equals("Direccion")){
+            String n= jTextField1.getText();
+            pst=con.prepareStatement("SELECT * FROM cliente WHERE Direccion LIKE ?");
+            pst.setString(1,n);
+        }else{
+            pst=con.prepareStatement("SELECT * FROM cliente");
+        }
+        
+        rs=pst.executeQuery();
+        ResultSetMetaData rss=rs.getMetaData();
+            q=rss.getColumnCount();
+            
+            DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
+            df.setRowCount(0);
+            while(rs.next()){
+                Vector v2=new Vector();
+                for(int i =1; i<=q;i++){
+                    v2.add(rs.getInt("idcliente"));
+                    v2.add(rs.getString("Nombre"));
+                    v2.add(rs.getString("Apellidos"));
+                    v2.add(rs.getString("Estatus"));
+                    v2.add(rs.getInt("PrecioMatricula"));
+                    v2.add(rs.getInt("Telefono"));
+                    v2.add(rs.getString("DNI"));
+                    v2.add(rs.getString("Direccion"));
+                }
+                df.addRow(v2);
+            }
+        
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
