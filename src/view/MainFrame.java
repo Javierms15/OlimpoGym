@@ -128,7 +128,6 @@ public class MainFrame extends javax.swing.JFrame {
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "IdCliente", "Nombre", "Apellidos", "Estatus", "PrecioMatricula", "Telefono", "DNI", "Direccion" }));
 
         jButton1.setText("Buscar");
-        jButton1.setActionCommand("Buscar");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -153,6 +152,11 @@ public class MainFrame extends javax.swing.JFrame {
         jButton3.setText("Editar cliente");
 
         jButton4.setText("Eliminar cliente");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Exportar a Excel");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -162,8 +166,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         jButton6.setText("Filtrar");
-
-        jTextField3.setText("jTextField3");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -270,6 +272,30 @@ public class MainFrame extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try {
+            // TODO add your handling code here:
+            DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
+            int fila=jTable1.getSelectedRow();
+            int id=(int) jTable1.getValueAt(fila, 0);
+            pst=con.prepareStatement("DELETE FROM cliente WHERE idcliente =?");
+            pst.setInt(1,id);
+            int k=pst.executeUpdate();
+            df.removeRow(fila);
+            if(k==1){
+                JOptionPane.showMessageDialog(this, "Cliente eliminado con éxito!");
+                mostrarAllClientes();
+                
+            }else{
+                JOptionPane.showMessageDialog(this, "Fallo al eliminar el cliente!");
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
