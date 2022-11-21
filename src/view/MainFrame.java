@@ -8,11 +8,13 @@ package view;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -155,6 +157,11 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         jButton3.setText("Editar cliente");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Eliminar cliente");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -370,6 +377,40 @@ public class MainFrame extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            // TODO add your handling code here:
+            EditarCliente datos=new EditarCliente();
+            DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
+            int fila=jTable1.getSelectedRow();
+            int id=(int) jTable1.getValueAt(fila, 0);
+            pst=con.prepareStatement("SELECT * FROM cliente WHERE idcliente =?");
+            pst.setInt(1,id);
+            rs=pst.executeQuery();
+            
+            datos.jTextField1.setText(jTable1.getValueAt(fila, 1).toString());
+            datos.jTextField2.setText(jTable1.getValueAt(fila, 2).toString());
+            datos.jTextField3.setText(jTable1.getValueAt(fila, 3).toString());
+            datos.jTextField4.setText(jTable1.getValueAt(fila, 4).toString());
+            datos.jTextField5.setText(jTable1.getValueAt(fila, 5).toString());
+            datos.jTextField6.setText(jTable1.getValueAt(fila, 6).toString());
+            datos.jTextField7.setText(jTable1.getValueAt(fila, 7).toString());
+            datos.idcliente=Integer.parseInt(jTable1.getValueAt(fila, 0).toString());
+            if(rs.next()){
+            Timestamp timestamp = rs.getTimestamp("fechaInicio");
+            java.util.Date fechaInicio = new java.util.Date(timestamp.getTime());
+            Timestamp timestamp1 = rs.getTimestamp("fechaFin");
+            java.util.Date fechaFin = new java.util.Date(timestamp1.getTime());
+            datos.jDateChooser1.setDate(fechaInicio);
+            datos.jDateChooser2.setDate(fechaFin);
+            }
+            datos.setVisible(true);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
