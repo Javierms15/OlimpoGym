@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,6 +79,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
             df.setRowCount(0);
+            SimpleDateFormat f=new SimpleDateFormat("dd-MM-yyyy");
             while(rs.next()){
                 Vector v2=new Vector();
                 for(int i =1; i<=q;i++){
@@ -89,6 +91,13 @@ public class MainFrame extends javax.swing.JFrame {
                     v2.add(rs.getInt("Telefono"));
                     v2.add(rs.getString("DNI"));
                     v2.add(rs.getString("Direccion"));
+                    Timestamp timestamp = rs.getTimestamp("fechaInicio");   
+                    java.util.Date fechaInicio = new java.util.Date(timestamp.getTime());
+                    v2.add(f.format(fechaInicio));
+                    Timestamp timestamp1 = rs.getTimestamp("fechaFin");   
+                    java.util.Date fechaFin = new java.util.Date(timestamp1.getTime());
+                    v2.add(f.format(fechaFin));
+                   
                 }
                 df.addRow(v2);
             }
@@ -120,7 +129,10 @@ public class MainFrame extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        jTextField3 = new javax.swing.JTextField();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -138,13 +150,13 @@ public class MainFrame extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "IdCliente", "Nombre", "Apellidos", "Estatus", "PrecioMatricula", "Telefono", "DNI", "Direccion"
+                "IdCliente", "Nombre", "Apellidos", "Estatus", "PrecioMatricula", "Telefono", "DNI", "Direccion", "fechaInicio", "fechaFin"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -178,6 +190,15 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         jButton6.setText("Filtrar");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Fecha de:");
+
+        jLabel3.setText("Fecha hasta:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -205,11 +226,18 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(43, 43, 43)
                         .addComponent(jButton1)
+                        .addGap(61, 61, 61)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(58, 58, 58)
-                        .addComponent(jButton6)
-                        .addGap(94, 94, 94))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton6))
+                            .addComponent(jLabel3))
+                        .addGap(33, 33, 33))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
@@ -220,14 +248,20 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton6)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1)
+                        .addComponent(jButton6))
+                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton3)
@@ -258,8 +292,9 @@ public class MainFrame extends javax.swing.JFrame {
             FileWriter fw=new FileWriter(filename);
             pst=con.prepareStatement("SELECT * FROM cliente");
             rs=pst.executeQuery();
-            fw.append("NOMBRE, APELLIDOS, ESTATUS, TELEFONO");
+            fw.append("NOMBRE, APELLIDOS, ESTATUS, TELEFONO, FECHAFIN");
             fw.append("\n");
+            SimpleDateFormat f=new SimpleDateFormat("dd-MM-yyyy");
             while(rs.next()){
                 
                 fw.append(rs.getString(2));
@@ -269,7 +304,8 @@ public class MainFrame extends javax.swing.JFrame {
                 fw.append(rs.getString(4));
                 fw.append(", ");
                 fw.append(String.valueOf( rs.getInt(6)));
-
+                fw.append(", ");
+                fw.append(String.valueOf(f.format(rs.getDate(10))));
                 fw.append("\n");
             }
             JOptionPane.showMessageDialog(this,"Archivo Excel generado con éxito");
@@ -356,6 +392,7 @@ public class MainFrame extends javax.swing.JFrame {
             
             DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
             df.setRowCount(0);
+            SimpleDateFormat f=new SimpleDateFormat("dd-MM-yyyy");
             while(rs.next()){
                 Vector v2=new Vector();
                 for(int i =1; i<=q;i++){
@@ -367,6 +404,13 @@ public class MainFrame extends javax.swing.JFrame {
                     v2.add(rs.getInt("Telefono"));
                     v2.add(rs.getString("DNI"));
                     v2.add(rs.getString("Direccion"));
+                    Timestamp timestamp = rs.getTimestamp("fechaInicio");   
+                    java.util.Date fechaInicio = new java.util.Date(timestamp.getTime());
+                    v2.add(f.format(fechaInicio));
+                    Timestamp timestamp1 = rs.getTimestamp("fechaFin");   
+                    java.util.Date fechaFin = new java.util.Date(timestamp1.getTime());
+                    v2.add(f.format(fechaFin));
+                    
                 }
                 df.addRow(v2);
             }
@@ -412,6 +456,61 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    //filtrar
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        try{
+        java.util.Date fI=jDateChooser1.getDate();
+ 
+        java.util.Date fF=jDateChooser2.getDate();
+     
+        int q;
+        if(fI!=null && fF !=null){
+            java.sql.Date fechaDe=new java.sql.Date(fI.getTime());
+            java.sql.Date fechaHasta=new java.sql.Date(fF.getTime());
+            SimpleDateFormat f1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            f1.format(fechaDe);
+            f1.format(fechaHasta);
+        
+            pst=con.prepareStatement("SELECT * FROM cliente WHERE  fechaFin >= ? AND fechaFin <= ?");
+            pst.setDate(1, fechaDe);
+            pst.setDate(2, fechaHasta);
+            rs=pst.executeQuery();
+            ResultSetMetaData rss=rs.getMetaData();
+            q=rss.getColumnCount();
+            
+            DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
+            df.setRowCount(0);
+            SimpleDateFormat f=new SimpleDateFormat("dd-MM-yyyy");
+            while(rs.next()){
+                Vector v2=new Vector();
+                for(int i =1; i<=q;i++){
+                    v2.add(rs.getInt("idcliente"));
+                    v2.add(rs.getString("Nombre"));
+                    v2.add(rs.getString("Apellidos"));
+                    v2.add(rs.getString("Estatus"));
+                    v2.add(rs.getInt("PrecioMatricula"));
+                    v2.add(rs.getInt("Telefono"));
+                    v2.add(rs.getString("DNI"));
+                    v2.add(rs.getString("Direccion"));
+                    Timestamp timestamp = rs.getTimestamp("fechaInicio");   
+                    java.util.Date fechaInicio = new java.util.Date(timestamp.getTime());
+                    v2.add(f.format(fechaInicio));
+                    Timestamp timestamp1 = rs.getTimestamp("fechaFin");   
+                    java.util.Date fechaFin = new java.util.Date(timestamp1.getTime());
+                    v2.add(f.format(fechaFin));
+                   
+                }
+                df.addRow(v2);
+            }
+        }else{
+            mostrarAllClientes();
+        }
+        } catch (SQLException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -455,10 +554,13 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox1;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }
