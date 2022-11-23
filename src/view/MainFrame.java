@@ -5,6 +5,12 @@
  */
 package view;
 
+import com.aspose.cells.FileFormatType;
+import com.aspose.cells.LoadOptions;
+import com.aspose.cells.SaveFormat;
+import com.aspose.cells.Workbook;
+import com.opencsv.CSVWriter;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -16,6 +22,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -290,11 +298,18 @@ public class MainFrame extends javax.swing.JFrame {
         String filename = "E:\\Excel exportado.csv";
         try {
             FileWriter fw=new FileWriter(filename);
+            //CSVWriter writer=new CSVWriter(fw);
             pst=con.prepareStatement("SELECT * FROM cliente");
             rs=pst.executeQuery();
             fw.append("NOMBRE, APELLIDOS, ESTATUS, TELEFONO, FECHAFIN");
             fw.append("\n");
             SimpleDateFormat f=new SimpleDateFormat("dd-MM-yyyy");
+           // List<String[]> columnas = new ArrayList<String[]>();
+            //String[] c={"NOMBRE","APELLIDOS","ESTATUS","TELEFONO","FECHAFIN"};
+            //columnas.add(c);
+           // writer.writeAll(columnas);
+           // List<String[]> data = new ArrayList<String[]>();
+            
             while(rs.next()){
                 
                 fw.append(rs.getString(2));
@@ -307,11 +322,23 @@ public class MainFrame extends javax.swing.JFrame {
                 fw.append(", ");
                 fw.append(String.valueOf(f.format(rs.getDate(10))));
                 fw.append("\n");
+                
+                //String[] user={rs.getString(2),rs.getString(3),String.valueOf( rs.getInt(6)),String.valueOf(f.format(rs.getDate(10)))};
+                //data.add(user);
+                
             }
+            //writer.writeAll(data);
             JOptionPane.showMessageDialog(this,"Archivo Excel generado con éxito");
             fw.flush();
             fw.close();
-            
+            // Opening CSV Files
+    // Creating CSV LoadOptions object
+    //LoadOptions loadOptions = new LoadOptions(FileFormatType.CSV);
+    // Creating an Workbook object with CSV file path and the loadOptions
+    // object
+    //Workbook workbook = new Workbook("E:\\Excel exportado.csv", loadOptions);
+   //workbook.save("E:\\Excel exportado.xlsx" , SaveFormat.XLSX);
+   
         } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -322,8 +349,12 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        
+        int pregunta=JOptionPane.showConfirmDialog(this, "¿Desea eliminar este cliente?","CONFIRMACIÓN",JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE);
+        if(pregunta==0){
         try {
             // TODO add your handling code here:
+            
             DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
             int fila=jTable1.getSelectedRow();
             int id=(int) jTable1.getValueAt(fila, 0);
@@ -342,7 +373,7 @@ public class MainFrame extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+            }
     }//GEN-LAST:event_jButton4ActionPerformed
     //buscar
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
