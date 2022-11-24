@@ -10,6 +10,9 @@ import com.aspose.cells.LoadOptions;
 import com.aspose.cells.SaveFormat;
 import com.aspose.cells.Workbook;
 import com.opencsv.CSVWriter;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -27,6 +30,9 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -262,11 +268,12 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1)
-                        .addComponent(jButton6))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1)))
                     .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
@@ -453,6 +460,22 @@ public class MainFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private static File buscar(String archivoABuscar, File directorio) {
+    File[] archivos = directorio.listFiles();
+    for (File archivo : archivos) {
+        if (archivo.getName().equals(archivoABuscar)) {
+            return archivo;
+        }
+        if (archivo.isDirectory()) {
+            File resultadoRecursion = buscar(archivoABuscar, archivo);
+            if (resultadoRecursion != null) {
+                return resultadoRecursion;
+            }
+        }
+    }
+    return null;
+}
+    
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
             // TODO add your handling code here:
@@ -479,10 +502,18 @@ public class MainFrame extends javax.swing.JFrame {
             java.util.Date fechaFin = new java.util.Date(timestamp1.getTime());
             datos.jDateChooser1.setDate(fechaInicio);
             datos.jDateChooser2.setDate(fechaFin);
+            File carpeta=new File("E:\\ImagenesPrueba\\");
+            File foto=buscar(jTable1.getValueAt(fila, 6).toString()+".jpg",carpeta);
+            Image img=ImageIO.read(foto);
+            ImageIcon f=new ImageIcon(img);
+            datos.jLabel12.setIcon(f);
+            datos.jLabel12.setVisible(true);
             }
             datos.setVisible(true);
             this.setVisible(false);
         } catch (SQLException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton3ActionPerformed

@@ -360,6 +360,7 @@ public class DatosCliente extends javax.swing.JFrame {
         MainFrame m = new MainFrame();
         m.setVisible(true);
         this.setVisible(false);
+        webcamPanel.stop();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -376,7 +377,7 @@ public class DatosCliente extends javax.swing.JFrame {
         Date fF=jDateChooser2.getDate();
         java.sql.Date fechaInicio=new java.sql.Date(fI.getTime());
         java.sql.Date fechaFin=new java.sql.Date(fF.getTime());
-        String foto=dni+"jpg";
+        String foto=dni+".jpg";
         
         File salidaImagen=new File("E:\\ImagenesPrueba\\"+dni+".jpg");
         ImageIO.write(ruta, "jpg", salidaImagen);
@@ -405,7 +406,7 @@ public class DatosCliente extends javax.swing.JFrame {
         MainFrame m = new MainFrame();
         m.setVisible(true);
         this.setVisible(false);
-        
+        webcamPanel.stop();
         } catch (SQLException ex) {
             Logger.getLogger(DatosCliente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
