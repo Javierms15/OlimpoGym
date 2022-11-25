@@ -534,7 +534,7 @@ public class MainFrame extends javax.swing.JFrame {
             f1.format(fechaDe);
             f1.format(fechaHasta);
         
-            pst=con.prepareStatement("SELECT * FROM cliente WHERE  fechaFin >= ? AND fechaFin <= ?");
+            pst=con.prepareStatement("SELECT * FROM cliente WHERE  fechaFin >= ? AND fechaFin <= ? ORDER BY fechaFin");
             pst.setDate(1, fechaDe);
             pst.setDate(2, fechaHasta);
             rs=pst.executeQuery();
