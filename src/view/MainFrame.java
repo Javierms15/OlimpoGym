@@ -47,6 +47,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("../olimpogym/logo.jpeg")).getImage());
         Connect();
         mostrarAllClientes();
         

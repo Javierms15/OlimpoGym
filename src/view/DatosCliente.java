@@ -42,6 +42,7 @@ public class DatosCliente extends javax.swing.JFrame {
      */
     public DatosCliente() {
         initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("../olimpogym/logo.jpeg")).getImage());
         Connect();
         setUpCamara();
     }
