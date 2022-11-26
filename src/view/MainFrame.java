@@ -10,6 +10,8 @@ import com.aspose.cells.LoadOptions;
 import com.aspose.cells.SaveFormat;
 import com.aspose.cells.Workbook;
 import com.opencsv.CSVWriter;
+import java.awt.Component;
+import java.awt.FileDialog;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -30,9 +32,11 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -304,6 +308,27 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         String filename = "E:\\Excel exportado.csv";
+       /* JFileChooser fc=new JFileChooser();
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        
+        Component parent = null;
+        int returnVal = fc.showSaveDialog(parent);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+ 
+ // obtener ruta
+       String selectPath = fc.getSelectedFile().getPath();
+       System.out.println ("El directorio que elija es:" + selectPath);
+        }
+    */    
+       FileDialog dialogoArchivo;
+    dialogoArchivo = new FileDialog(this, "Seleccione lugar de guardado",FileDialog.SAVE);
+    dialogoArchivo.setVisible(true);
+    /* Validar que se haya Seleccionado un Archivo*/
+    String directorio = dialogoArchivo.getDirectory();
+    String nombreArchivo =dialogoArchivo.getFile(); 
+    String rutatotal = directorio + nombreArchivo;
+    filename=rutatotal;
+       
         try {
             FileWriter fw=new FileWriter(filename);
             //CSVWriter writer=new CSVWriter(fw);
@@ -336,6 +361,7 @@ public class MainFrame extends javax.swing.JFrame {
                 
             }
             //writer.writeAll(data);
+            
             JOptionPane.showMessageDialog(this,"Archivo Excel generado con éxito");
             fw.flush();
             fw.close();
