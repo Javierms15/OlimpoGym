@@ -187,6 +187,7 @@ public class MainFrame extends javax.swing.JFrame {
         jComboBox1.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
 
         jButton1.setBackground(new java.awt.Color(255, 51, 51));
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Buscar");
         jButton1.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -200,6 +201,7 @@ public class MainFrame extends javax.swing.JFrame {
         jDateChooser2.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
 
         jButton6.setBackground(new java.awt.Color(255, 51, 51));
+        jButton6.setForeground(new java.awt.Color(255, 255, 255));
         jButton6.setText("Filtrar");
         jButton6.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -264,6 +266,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 0, 0), null));
 
         jButton2.setBackground(new java.awt.Color(255, 51, 51));
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Nuevo cliente");
         jButton2.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -273,6 +276,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         jButton3.setBackground(new java.awt.Color(255, 51, 51));
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Editar cliente");
         jButton3.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -282,6 +286,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         jButton4.setBackground(new java.awt.Color(255, 51, 51));
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("Eliminar cliente");
         jButton4.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -291,6 +296,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         jButton5.setBackground(new java.awt.Color(255, 51, 51));
+        jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("Exportar a Excel");
         jButton5.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -554,6 +560,13 @@ public class MainFrame extends javax.swing.JFrame {
             pst.setInt(1,id);
             rs=pst.executeQuery();
 
+            /*
+            ImageIcon f=new ImageIcon(getClass().getResource("../olimpogym/OlimpoN.jpeg"));
+            Image image=f.getImage();
+            Image imagenEscala=image.getScaledInstance(jLabel4.getWidth(), jLabel4.getHeight(), Image.SCALE_SMOOTH);
+            ImageIcon result=new ImageIcon(imagenEscala);
+            datos.jLabel13.setIcon(result);
+            */
             datos.jTextField1.setText(jTable1.getValueAt(fila, 1).toString());
             datos.jTextField2.setText(jTable1.getValueAt(fila, 2).toString());
             datos.jTextField3.setText(jTable1.getValueAt(fila, 3).toString());
@@ -569,7 +582,7 @@ public class MainFrame extends javax.swing.JFrame {
                 java.util.Date fechaFin = new java.util.Date(timestamp1.getTime());
                 datos.jDateChooser1.setDate(fechaInicio);
                 datos.jDateChooser2.setDate(fechaFin);
-                File carpeta=new File("E:\\ImagenesPrueba\\");
+                File carpeta=new File("C:\\Users\\javie\\Desktop\\ImagenesPrueba");
                     File foto=buscar(jTable1.getValueAt(fila, 6).toString()+".jpg",carpeta);
                     Image img=ImageIO.read(foto);
                     ImageIcon f=new ImageIcon(img);
