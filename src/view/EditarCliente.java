@@ -162,6 +162,7 @@ public class EditarCliente extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("OLIMPO NGR GYM");
 
         jLabel1.setFont(new java.awt.Font("Malgun Gothic Semilight", 1, 36)); // NOI18N
         jLabel1.setText("Datos del cliente");

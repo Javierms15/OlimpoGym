@@ -52,6 +52,16 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("../olimpogym/logo.jpeg")).getImage());
+        ImageIcon f=new ImageIcon(getClass().getResource("../olimpogym/logo.jpeg"));
+        Image image=f.getImage();
+        Image imagenEscala=image.getScaledInstance(jLabel4.getWidth(), jLabel4.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon result=new ImageIcon(imagenEscala);
+        this.jLabel4.setIcon(result);
+        jButton1.setIcon(new ImageIcon(getClass().getResource("../olimpogym/lupa.png")));
+        jButton4.setIcon(new ImageIcon(getClass().getResource("../olimpogym/papelera.png")));
+        jButton5.setIcon(new ImageIcon(getClass().getResource("../olimpogym/excel.png")));
+        jButton2.setIcon(new ImageIcon(getClass().getResource("../olimpogym/nuevo.png")));
+        jButton3.setIcon(new ImageIcon(getClass().getResource("../olimpogym/editar.png")));
         Connect();
         mostrarAllClientes();
         
@@ -137,29 +147,42 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jTextField1 = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jButton6 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("OLIMPO NGR GYM");
+        setBackground(new java.awt.Color(0, 0, 0));
 
-        jLabel1.setFont(new java.awt.Font("Malgun Gothic Semilight", 1, 36)); // NOI18N
-        jLabel1.setText("Lista de clientes");
+        jPanel4.setBackground(new java.awt.Color(0, 0, 0));
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel1.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "IdCliente", "Nombre", "Apellidos", "Estatus", "PrecioMatricula", "Telefono", "DNI", "Direccion" }));
 
+        jButton1.setBackground(new java.awt.Color(255, 51, 51));
         jButton1.setText("Buscar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -167,18 +190,65 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "IdCliente", "Nombre", "Apellidos", "Estatus", "PrecioMatricula", "Telefono", "DNI", "Direccion", "fechaInicio", "fechaFin"
+        jButton6.setText("Filtrar");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        });
+
+        jLabel2.setText("Fecha de:");
+
+        jLabel3.setText("Fecha hasta:");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(67, 67, 67)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 293, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(74, 74, 74)
+                        .addComponent(jButton6))
+                    .addComponent(jLabel3))
+                .addGap(117, 117, 117))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton6)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(4, 4, 4))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(38, Short.MAX_VALUE))
+        );
+
+        jPanel2.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(0, 0, 0), null));
 
         jButton2.setText("Nuevo cliente");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -208,127 +278,168 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton6.setText("Filtrar");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(139, 139, 139)
+                .addComponent(jButton2)
+                .addGap(221, 221, 221)
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 207, Short.MAX_VALUE)
+                .addComponent(jButton4)
+                .addGap(193, 193, 193)
+                .addComponent(jButton5)
+                .addGap(79, 79, 79))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4)
+                    .addComponent(jButton5))
+                .addContainerGap(37, Short.MAX_VALUE))
+        );
+
+        jTable1.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, null));
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "IdCliente", "Nombre", "Apellidos", "Estatus", "PrecioMatricula", "Telefono", "DNI", "Direccion", "fechaInicio", "fechaFin"
             }
-        });
+        ));
+        jScrollPane1.setViewportView(jTable1);
 
-        jLabel2.setText("Fecha de:");
+        jPanel5.setBackground(new java.awt.Color(102, 102, 102));
 
-        jLabel3.setText("Fecha hasta:");
+        jLabel1.setFont(new java.awt.Font("Malgun Gothic Semilight", 1, 36)); // NOI18N
+        jLabel1.setText("OLIMPO NGR GYM");
+
+        jLabel4.setText("jLabel4");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap(452, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(394, 394, 394)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
+                    .addComponent(jLabel1))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1357, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 761, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addGap(105, 105, 105)
-                        .addComponent(jButton3)
-                        .addGap(118, 118, 118)
-                        .addComponent(jButton4)
-                        .addGap(70, 70, 70)
-                        .addComponent(jButton5)
-                        .addContainerGap(115, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43)
-                        .addComponent(jButton1)
-                        .addGap(61, 61, 61)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton6))
-                            .addComponent(jLabel3))
-                        .addGap(33, 33, 33))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(314, 314, 314))
+                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1)))
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //añadir nuevo cliente
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        
-        DatosCliente datos=new DatosCliente();
-        datos.setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        
+
         String filename = "E:\\Excel exportado.csv";
-       /* JFileChooser fc=new JFileChooser();
+        /* JFileChooser fc=new JFileChooser();
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        
+
         Component parent = null;
         int returnVal = fc.showSaveDialog(parent);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
- 
- // obtener ruta
-       String selectPath = fc.getSelectedFile().getPath();
-       System.out.println ("El directorio que elija es:" + selectPath);
+
+            // obtener ruta
+            String selectPath = fc.getSelectedFile().getPath();
+            System.out.println ("El directorio que elija es:" + selectPath);
         }
-    */    
-       FileDialog dialogoArchivo;
-    dialogoArchivo = new FileDialog(this, "Seleccione lugar de guardado",FileDialog.SAVE);
-    dialogoArchivo.setVisible(true);
-    /* Validar que se haya Seleccionado un Archivo*/
-    String directorio = dialogoArchivo.getDirectory();
-    String nombreArchivo =dialogoArchivo.getFile(); 
-    String rutatotal = directorio + nombreArchivo;
-    filename=rutatotal;
-       
+        */
+        FileDialog dialogoArchivo;
+        dialogoArchivo = new FileDialog(this, "Seleccione lugar de guardado",FileDialog.SAVE);
+        dialogoArchivo.setVisible(true);
+        /* Validar que se haya Seleccionado un Archivo*/
+        String directorio = dialogoArchivo.getDirectory();
+        String nombreArchivo =dialogoArchivo.getFile();
+        String rutatotal = directorio + nombreArchivo;
+        filename=rutatotal;
+
         try {
             FileWriter fw=new FileWriter(filename);
             //CSVWriter writer=new CSVWriter(fw);
@@ -337,14 +448,14 @@ public class MainFrame extends javax.swing.JFrame {
             fw.append("NOMBRE, APELLIDOS, ESTATUS, TELEFONO, FECHAFIN");
             fw.append("\n");
             SimpleDateFormat f=new SimpleDateFormat("dd-MM-yyyy");
-           // List<String[]> columnas = new ArrayList<String[]>();
+            // List<String[]> columnas = new ArrayList<String[]>();
             //String[] c={"NOMBRE","APELLIDOS","ESTATUS","TELEFONO","FECHAFIN"};
             //columnas.add(c);
-           // writer.writeAll(columnas);
-           // List<String[]> data = new ArrayList<String[]>();
-            
+            // writer.writeAll(columnas);
+            // List<String[]> data = new ArrayList<String[]>();
+
             while(rs.next()){
-                
+
                 fw.append(rs.getString(2));
                 fw.append(", ");
                 fw.append(rs.getString(3));
@@ -355,106 +466,212 @@ public class MainFrame extends javax.swing.JFrame {
                 fw.append(", ");
                 fw.append(String.valueOf(f.format(rs.getDate(10))));
                 fw.append("\n");
-                
+
                 //String[] user={rs.getString(2),rs.getString(3),String.valueOf( rs.getInt(6)),String.valueOf(f.format(rs.getDate(10)))};
                 //data.add(user);
-                
+
             }
             //writer.writeAll(data);
-            
+
             JOptionPane.showMessageDialog(this,"Archivo Excel generado con éxito");
             fw.flush();
             fw.close();
             // Opening CSV Files
-    // Creating CSV LoadOptions object
-    //LoadOptions loadOptions = new LoadOptions(FileFormatType.CSV);
-    // Creating an Workbook object with CSV file path and the loadOptions
-    // object
-    //Workbook workbook = new Workbook("E:\\Excel exportado.csv", loadOptions);
-   //workbook.save("E:\\Excel exportado.xlsx" , SaveFormat.XLSX);
-   
+            // Creating CSV LoadOptions object
+            //LoadOptions loadOptions = new LoadOptions(FileFormatType.CSV);
+            // Creating an Workbook object with CSV file path and the loadOptions
+            // object
+            //Workbook workbook = new Workbook("E:\\Excel exportado.csv", loadOptions);
+            //workbook.save("E:\\Excel exportado.xlsx" , SaveFormat.XLSX);
+
         } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        
+
         int pregunta=JOptionPane.showConfirmDialog(this, "¿Desea eliminar este cliente?","CONFIRMACIÓN",JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE);
         if(pregunta==0){
+            try {
+                // TODO add your handling code here:
+
+                DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
+                int fila=jTable1.getSelectedRow();
+                int id=(int) jTable1.getValueAt(fila, 0);
+                pst=con.prepareStatement("DELETE FROM cliente WHERE idcliente =?");
+                pst.setInt(1,id);
+                int k=pst.executeUpdate();
+                df.removeRow(fila);
+                if(k==1){
+                    JOptionPane.showMessageDialog(this, "Cliente eliminado con éxito!");
+                    mostrarAllClientes();
+
+                }else{
+                    JOptionPane.showMessageDialog(this, "Fallo al eliminar el cliente!");
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
             // TODO add your handling code here:
-            
+            EditarCliente datos=new EditarCliente();
             DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
             int fila=jTable1.getSelectedRow();
             int id=(int) jTable1.getValueAt(fila, 0);
-            pst=con.prepareStatement("DELETE FROM cliente WHERE idcliente =?");
+            pst=con.prepareStatement("SELECT * FROM cliente WHERE idcliente =?");
             pst.setInt(1,id);
-            int k=pst.executeUpdate();
-            df.removeRow(fila);
-            if(k==1){
-                JOptionPane.showMessageDialog(this, "Cliente eliminado con éxito!");
-                mostrarAllClientes();
-                
-            }else{
-                JOptionPane.showMessageDialog(this, "Fallo al eliminar el cliente!");
+            rs=pst.executeQuery();
+
+            datos.jTextField1.setText(jTable1.getValueAt(fila, 1).toString());
+            datos.jTextField2.setText(jTable1.getValueAt(fila, 2).toString());
+            datos.jTextField3.setText(jTable1.getValueAt(fila, 3).toString());
+            datos.jTextField4.setText(jTable1.getValueAt(fila, 4).toString());
+            datos.jTextField5.setText(jTable1.getValueAt(fila, 5).toString());
+            datos.jTextField6.setText(jTable1.getValueAt(fila, 6).toString());
+            datos.jTextField7.setText(jTable1.getValueAt(fila, 7).toString());
+            datos.idcliente=Integer.parseInt(jTable1.getValueAt(fila, 0).toString());
+            if(rs.next()){
+                Timestamp timestamp = rs.getTimestamp("fechaInicio");
+                java.util.Date fechaInicio = new java.util.Date(timestamp.getTime());
+                Timestamp timestamp1 = rs.getTimestamp("fechaFin");
+                java.util.Date fechaFin = new java.util.Date(timestamp1.getTime());
+                datos.jDateChooser1.setDate(fechaInicio);
+                datos.jDateChooser2.setDate(fechaFin);
+                File carpeta=new File("E:\\ImagenesPrueba\\");
+                    File foto=buscar(jTable1.getValueAt(fila, 6).toString()+".jpg",carpeta);
+                    Image img=ImageIO.read(foto);
+                    ImageIcon f=new ImageIcon(img);
+                    datos.jLabel12.setIcon(f);
+                    datos.jLabel12.setVisible(true);
+                }
+                datos.setVisible(true);
+                this.setVisible(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    //añadir nuevo cliente
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+
+        DatosCliente datos=new DatosCliente();
+        datos.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    //filtrar
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        try{
+            java.util.Date fI=jDateChooser1.getDate();
+
+            java.util.Date fF=jDateChooser2.getDate();
+
+            int q;
+            if(fI!=null && fF !=null){
+                java.sql.Date fechaDe=new java.sql.Date(fI.getTime());
+                java.sql.Date fechaHasta=new java.sql.Date(fF.getTime());
+                SimpleDateFormat f1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                f1.format(fechaDe);
+                f1.format(fechaHasta);
+
+                pst=con.prepareStatement("SELECT * FROM cliente WHERE  fechaFin >= ? AND fechaFin <= ? ORDER BY fechaFin");
+                pst.setDate(1, fechaDe);
+                pst.setDate(2, fechaHasta);
+                rs=pst.executeQuery();
+                ResultSetMetaData rss=rs.getMetaData();
+                q=rss.getColumnCount();
+
+                DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
+                df.setRowCount(0);
+                SimpleDateFormat f=new SimpleDateFormat("dd-MM-yyyy");
+                while(rs.next()){
+                    Vector v2=new Vector();
+                    for(int i =1; i<=q;i++){
+                        v2.add(rs.getInt("idcliente"));
+                        v2.add(rs.getString("Nombre"));
+                        v2.add(rs.getString("Apellidos"));
+                        v2.add(rs.getString("Estatus"));
+                        v2.add(rs.getInt("PrecioMatricula"));
+                        v2.add(rs.getInt("Telefono"));
+                        v2.add(rs.getString("DNI"));
+                        v2.add(rs.getString("Direccion"));
+                        Timestamp timestamp = rs.getTimestamp("fechaInicio");
+                        java.util.Date fechaInicio = new java.util.Date(timestamp.getTime());
+                        v2.add(f.format(fechaInicio));
+                        Timestamp timestamp1 = rs.getTimestamp("fechaFin");
+                        java.util.Date fechaFin = new java.util.Date(timestamp1.getTime());
+                        v2.add(f.format(fechaFin));
+
+                    }
+                    df.addRow(v2);
+                }
+            }else{
+                mostrarAllClientes();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-            }
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_jButton6ActionPerformed
+
     //buscar
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         int q;
         try{
-        String info=jComboBox1.getSelectedItem().toString();
-        if(info.equals("IdCliente")){
-            int id=Integer.parseInt(jTextField1.getText());
-        pst=con.prepareStatement("SELECT * FROM cliente WHERE idcliente =?");
-        pst.setInt(1,id);
-        }else if(info.equals("Nombre")){
-            String n= jTextField1.getText();
-            pst=con.prepareStatement("SELECT * FROM cliente WHERE Nombre LIKE ?");
-            pst.setString(1,n);
-        }else if(info.equals("Apellidos")){
-            String n= jTextField1.getText();
-            pst=con.prepareStatement("SELECT * FROM cliente WHERE Apellidos LIKE ?");
-            pst.setString(1,n);
-        }else if(info.equals("Estatus")){
-            String n= jTextField1.getText();
-            pst=con.prepareStatement("SELECT * FROM cliente WHERE Estatus LIKE ?");
-            pst.setString(1,n);
-        }else if(info.equals("PrecioMatricula")){
-             int id=Integer.parseInt(jTextField1.getText());
-        pst=con.prepareStatement("SELECT * FROM cliente WHERE PrecioMatricula =?");
-        pst.setInt(1,id);
-        }else if(info.equals("Telefono")){
-             int id=Integer.parseInt(jTextField1.getText());
-        pst=con.prepareStatement("SELECT * FROM cliente WHERE Telefono =?");
-        pst.setInt(1,id);
-        }else if(info.equals("DNI")){
-            String n= jTextField1.getText();
-            pst=con.prepareStatement("SELECT * FROM cliente WHERE DNI LIKE ?");
-            pst.setString(1,n);
-        }else if(info.equals("Direccion")){
-            String n= jTextField1.getText();
-            pst=con.prepareStatement("SELECT * FROM cliente WHERE Direccion LIKE ?");
-            pst.setString(1,n);
-        }else{
-            pst=con.prepareStatement("SELECT * FROM cliente");
-        }
-        
-        rs=pst.executeQuery();
-        ResultSetMetaData rss=rs.getMetaData();
+            String info=jComboBox1.getSelectedItem().toString();
+            if(info.equals("IdCliente")){
+                int id=Integer.parseInt(jTextField1.getText());
+                pst=con.prepareStatement("SELECT * FROM cliente WHERE idcliente =?");
+                pst.setInt(1,id);
+            }else if(info.equals("Nombre")){
+                String n= jTextField1.getText();
+                pst=con.prepareStatement("SELECT * FROM cliente WHERE Nombre LIKE ?");
+                pst.setString(1,n);
+            }else if(info.equals("Apellidos")){
+                String n= jTextField1.getText();
+                pst=con.prepareStatement("SELECT * FROM cliente WHERE Apellidos LIKE ?");
+                pst.setString(1,n);
+            }else if(info.equals("Estatus")){
+                String n= jTextField1.getText();
+                pst=con.prepareStatement("SELECT * FROM cliente WHERE Estatus LIKE ?");
+                pst.setString(1,n);
+            }else if(info.equals("PrecioMatricula")){
+                int id=Integer.parseInt(jTextField1.getText());
+                pst=con.prepareStatement("SELECT * FROM cliente WHERE PrecioMatricula =?");
+                pst.setInt(1,id);
+            }else if(info.equals("Telefono")){
+                int id=Integer.parseInt(jTextField1.getText());
+                pst=con.prepareStatement("SELECT * FROM cliente WHERE Telefono =?");
+                pst.setInt(1,id);
+            }else if(info.equals("DNI")){
+                String n= jTextField1.getText();
+                pst=con.prepareStatement("SELECT * FROM cliente WHERE DNI LIKE ?");
+                pst.setString(1,n);
+            }else if(info.equals("Direccion")){
+                String n= jTextField1.getText();
+                pst=con.prepareStatement("SELECT * FROM cliente WHERE Direccion LIKE ?");
+                pst.setString(1,n);
+            }else{
+                pst=con.prepareStatement("SELECT * FROM cliente");
+            }
+
+            rs=pst.executeQuery();
+            ResultSetMetaData rss=rs.getMetaData();
             q=rss.getColumnCount();
-            
+
             DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
             df.setRowCount(0);
             SimpleDateFormat f=new SimpleDateFormat("dd-MM-yyyy");
@@ -469,22 +686,21 @@ public class MainFrame extends javax.swing.JFrame {
                     v2.add(rs.getInt("Telefono"));
                     v2.add(rs.getString("DNI"));
                     v2.add(rs.getString("Direccion"));
-                    Timestamp timestamp = rs.getTimestamp("fechaInicio");   
+                    Timestamp timestamp = rs.getTimestamp("fechaInicio");
                     java.util.Date fechaInicio = new java.util.Date(timestamp.getTime());
                     v2.add(f.format(fechaInicio));
-                    Timestamp timestamp1 = rs.getTimestamp("fechaFin");   
+                    Timestamp timestamp1 = rs.getTimestamp("fechaFin");
                     java.util.Date fechaFin = new java.util.Date(timestamp1.getTime());
                     v2.add(f.format(fechaFin));
-                    
+
                 }
                 df.addRow(v2);
             }
-        
-        
+
         } catch (SQLException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private static File buscar(String archivoABuscar, File directorio) {
@@ -503,103 +719,6 @@ public class MainFrame extends javax.swing.JFrame {
     return null;
 }
     
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
-            // TODO add your handling code here:
-            EditarCliente datos=new EditarCliente();
-            DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
-            int fila=jTable1.getSelectedRow();
-            int id=(int) jTable1.getValueAt(fila, 0);
-            pst=con.prepareStatement("SELECT * FROM cliente WHERE idcliente =?");
-            pst.setInt(1,id);
-            rs=pst.executeQuery();
-            
-            datos.jTextField1.setText(jTable1.getValueAt(fila, 1).toString());
-            datos.jTextField2.setText(jTable1.getValueAt(fila, 2).toString());
-            datos.jTextField3.setText(jTable1.getValueAt(fila, 3).toString());
-            datos.jTextField4.setText(jTable1.getValueAt(fila, 4).toString());
-            datos.jTextField5.setText(jTable1.getValueAt(fila, 5).toString());
-            datos.jTextField6.setText(jTable1.getValueAt(fila, 6).toString());
-            datos.jTextField7.setText(jTable1.getValueAt(fila, 7).toString());
-            datos.idcliente=Integer.parseInt(jTable1.getValueAt(fila, 0).toString());
-            if(rs.next()){
-            Timestamp timestamp = rs.getTimestamp("fechaInicio");
-            java.util.Date fechaInicio = new java.util.Date(timestamp.getTime());
-            Timestamp timestamp1 = rs.getTimestamp("fechaFin");
-            java.util.Date fechaFin = new java.util.Date(timestamp1.getTime());
-            datos.jDateChooser1.setDate(fechaInicio);
-            datos.jDateChooser2.setDate(fechaFin);
-            File carpeta=new File("E:\\ImagenesPrueba\\");
-            File foto=buscar(jTable1.getValueAt(fila, 6).toString()+".jpg",carpeta);
-            Image img=ImageIO.read(foto);
-            ImageIcon f=new ImageIcon(img);
-            datos.jLabel12.setIcon(f);
-            datos.jLabel12.setVisible(true);
-            }
-            datos.setVisible(true);
-            this.setVisible(false);
-        } catch (SQLException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    //filtrar
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-        try{
-        java.util.Date fI=jDateChooser1.getDate();
- 
-        java.util.Date fF=jDateChooser2.getDate();
-     
-        int q;
-        if(fI!=null && fF !=null){
-            java.sql.Date fechaDe=new java.sql.Date(fI.getTime());
-            java.sql.Date fechaHasta=new java.sql.Date(fF.getTime());
-            SimpleDateFormat f1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            f1.format(fechaDe);
-            f1.format(fechaHasta);
-        
-            pst=con.prepareStatement("SELECT * FROM cliente WHERE  fechaFin >= ? AND fechaFin <= ? ORDER BY fechaFin");
-            pst.setDate(1, fechaDe);
-            pst.setDate(2, fechaHasta);
-            rs=pst.executeQuery();
-            ResultSetMetaData rss=rs.getMetaData();
-            q=rss.getColumnCount();
-            
-            DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
-            df.setRowCount(0);
-            SimpleDateFormat f=new SimpleDateFormat("dd-MM-yyyy");
-            while(rs.next()){
-                Vector v2=new Vector();
-                for(int i =1; i<=q;i++){
-                    v2.add(rs.getInt("idcliente"));
-                    v2.add(rs.getString("Nombre"));
-                    v2.add(rs.getString("Apellidos"));
-                    v2.add(rs.getString("Estatus"));
-                    v2.add(rs.getInt("PrecioMatricula"));
-                    v2.add(rs.getInt("Telefono"));
-                    v2.add(rs.getString("DNI"));
-                    v2.add(rs.getString("Direccion"));
-                    Timestamp timestamp = rs.getTimestamp("fechaInicio");   
-                    java.util.Date fechaInicio = new java.util.Date(timestamp.getTime());
-                    v2.add(f.format(fechaInicio));
-                    Timestamp timestamp1 = rs.getTimestamp("fechaFin");   
-                    java.util.Date fechaFin = new java.util.Date(timestamp1.getTime());
-                    v2.add(f.format(fechaFin));
-                   
-                }
-                df.addRow(v2);
-            }
-        }else{
-            mostrarAllClientes();
-        }
-        } catch (SQLException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jButton6ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -648,6 +767,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
