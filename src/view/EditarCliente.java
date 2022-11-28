@@ -41,7 +41,7 @@ public class EditarCliente extends javax.swing.JFrame {
      */
     public EditarCliente() {
         initComponents();
-        setIconImage(new ImageIcon(getClass().getResource("../olimpogym/logo.jpeg")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/olimpogym/logo.jpeg")).getImage());
         Connect();
         setUpCamara();
         

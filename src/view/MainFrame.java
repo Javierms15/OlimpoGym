@@ -52,17 +52,17 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        setIconImage(new ImageIcon(getClass().getResource("../olimpogym/logo.jpeg")).getImage());
-        ImageIcon f=new ImageIcon(getClass().getResource("../olimpogym/OlimpoN.jpeg"));
+        setIconImage(new ImageIcon(getClass().getResource("/olimpogym/logo.jpeg")).getImage());
+        ImageIcon f=new ImageIcon(getClass().getResource("/olimpogym/OlimpoN.jpeg"));
         Image image=f.getImage();
         Image imagenEscala=image.getScaledInstance(jLabel4.getWidth(), jLabel4.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon result=new ImageIcon(imagenEscala);
         this.jLabel4.setIcon(result);
-        jButton1.setIcon(new ImageIcon(getClass().getResource("../olimpogym/lupa.png")));
-        jButton4.setIcon(new ImageIcon(getClass().getResource("../olimpogym/papelera.png")));
-        jButton5.setIcon(new ImageIcon(getClass().getResource("../olimpogym/excel.png")));
-        jButton2.setIcon(new ImageIcon(getClass().getResource("../olimpogym/nuevo.png")));
-        jButton3.setIcon(new ImageIcon(getClass().getResource("../olimpogym/editar.png")));
+        jButton1.setIcon(new ImageIcon(getClass().getResource("/olimpogym/lupa.png")));
+        jButton4.setIcon(new ImageIcon(getClass().getResource("/olimpogym/papelera.png")));
+        jButton5.setIcon(new ImageIcon(getClass().getResource("/olimpogym/excel.png")));
+        jButton2.setIcon(new ImageIcon(getClass().getResource("/olimpogym/nuevo.png")));
+        jButton3.setIcon(new ImageIcon(getClass().getResource("/olimpogym/editar.png")));
         Connect();
         mostrarAllClientes();
         
@@ -585,7 +585,8 @@ public class MainFrame extends javax.swing.JFrame {
                 File carpeta=new File("C:\\Users\\javie\\Desktop\\ImagenesPrueba");
                     File foto=buscar(jTable1.getValueAt(fila, 6).toString()+".jpg",carpeta);
                     Image img=ImageIO.read(foto);
-                    ImageIcon f=new ImageIcon(img);
+                    Image imagenEscala=img.getScaledInstance(datos.jLabel12.getWidth(), datos.jLabel12.getHeight(), Image.SCALE_SMOOTH);
+                    ImageIcon f=new ImageIcon(imagenEscala);
                     datos.jLabel12.setIcon(f);
                     datos.jLabel12.setVisible(true);
                 }

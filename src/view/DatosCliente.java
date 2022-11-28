@@ -43,11 +43,11 @@ public class DatosCliente extends javax.swing.JFrame {
      */
     public DatosCliente() {
         initComponents();
-        setIconImage(new ImageIcon(getClass().getResource("../olimpogym/logo.jpeg")).getImage());
-        jButton5.setIcon(new ImageIcon(getClass().getResource("../olimpogym/apagar.png")));
-        jButton3.setIcon(new ImageIcon(getClass().getResource("../olimpogym/camara.png")));
-        jButton4.setIcon(new ImageIcon(getClass().getResource("../olimpogym/encender.png")));
-        ImageIcon f=new ImageIcon(getClass().getResource("../olimpogym/OlimpoN.jpeg"));
+        setIconImage(new ImageIcon(getClass().getResource("/olimpogym/logo.jpeg")).getImage());
+        jButton5.setIcon(new ImageIcon(getClass().getResource("/olimpogym/apagar.png")));
+        jButton3.setIcon(new ImageIcon(getClass().getResource("/olimpogym/camara.png")));
+        jButton4.setIcon(new ImageIcon(getClass().getResource("/olimpogym/encender.png")));
+        ImageIcon f=new ImageIcon(getClass().getResource("/olimpogym/OlimpoN.jpeg"));
         Image image=f.getImage();
         Image imagenEscala=image.getScaledInstance(jLabel13.getWidth(), jLabel13.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon result=new ImageIcon(imagenEscala);
@@ -241,7 +241,7 @@ public class DatosCliente extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,7 +269,7 @@ public class DatosCliente extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
