@@ -466,7 +466,7 @@ public class MainFrame extends javax.swing.JFrame {
         /* Validar que se haya Seleccionado un Archivo*/
         String directorio = dialogoArchivo.getDirectory();
         String nombreArchivo =dialogoArchivo.getFile();
-        String rutatotal = directorio + nombreArchivo;
+        String rutatotal = directorio + nombreArchivo+".csv";
         filename=rutatotal;
 
         try {
