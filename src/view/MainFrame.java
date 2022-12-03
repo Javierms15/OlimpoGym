@@ -582,7 +582,7 @@ public class MainFrame extends javax.swing.JFrame {
                 java.util.Date fechaFin = new java.util.Date(timestamp1.getTime());
                 datos.jDateChooser1.setDate(fechaInicio);
                 datos.jDateChooser2.setDate(fechaFin);
-                File carpeta=new File("C:\\Users\\javie\\Desktop\\ImagenesPrueba");
+                File carpeta=new File("C:\\Users\\Evaristo\\Desktop\\FOTOSGIMNASIO");//"C:\\Users\\Evaristo\\Desktop\\FOTOSGIMNASIO"
                     File foto=buscar(jTable1.getValueAt(fila, 6).toString()+".jpg",carpeta);
                     Image img=ImageIO.read(foto);
                     Image imagenEscala=img.getScaledInstance(datos.jLabel12.getWidth(), datos.jLabel12.getHeight(), Image.SCALE_SMOOTH);
@@ -590,6 +590,8 @@ public class MainFrame extends javax.swing.JFrame {
                     datos.jLabel12.setIcon(f);
                     datos.jLabel12.setVisible(true);
                 }
+            datos.dni=datos.jTextField6.getText();
+            datos.ruta=ImageIO.read(new File("C:\\Users\\Evaristo\\Desktop\\FOTOSGIMNASIO\\"+datos.dni+".jpg"));
                 datos.setVisible(true);
                 this.setVisible(false);
             } catch (SQLException ex) {

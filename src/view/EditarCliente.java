@@ -55,6 +55,7 @@ public class EditarCliente extends javax.swing.JFrame {
         setUpCamara();
         
     }
+    String dni;
     
     int largoCamara=322;
     int anchoCamara=212;
@@ -406,9 +407,9 @@ public class EditarCliente extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
                     .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton3)
-                        .addComponent(jButton5)
                         .addComponent(jButton4)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -517,6 +518,22 @@ public class EditarCliente extends javax.swing.JFrame {
         webcamPanel.stop();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+      private static File buscar(String archivoABuscar, File directorio) {
+    File[] archivos = directorio.listFiles();
+    for (File archivo : archivos) {
+        if (archivo.getName().equals(archivoABuscar)) {
+            return archivo;
+        }
+        if (archivo.isDirectory()) {
+            File resultadoRecursion = buscar(archivoABuscar, archivo);
+            if (resultadoRecursion != null) {
+                return resultadoRecursion;
+            }
+        }
+    }
+    return null;
+}
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         try {
@@ -532,8 +549,12 @@ public class EditarCliente extends javax.swing.JFrame {
         java.sql.Date fechaInicio=new java.sql.Date(fI.getTime());
         java.sql.Date fechaFin=new java.sql.Date(fF.getTime());
         String foto=dni+".jpg";
-        
-        File salidaImagen=new File("E:\\ImagenesPrueba\\"+dni+".jpg");
+       // File carpeta=new File("C:\\Users\\javie\\Desktop\\ImagenesPrueba");
+        //File archivo=buscar(foto,carpeta);
+        //ruta=ImageIO.read(archivo);
+        //ruta=ImageIO.read(new File("C:\\Users\\javie\\Desktop\\ImagenesPrueba\\"+dni+".jpg"));
+        File salidaImagen=new File("C:\\Users\\Evaristo\\Desktop\\FOTOSGIMNASIO\\"+dni+".jpg");//C:\\Users\\Evaristo\\Desktop\\FOTOSGIMNASIO\\
+        //ruta=ImageIO.read(salidaImagen);
         ImageIO.write(ruta, "jpg", salidaImagen);
         
         pst=con.prepareStatement("UPDATE cliente SET nombre=?,apellidos=?,estatus=?,precioMatricula=?,telefono=?,dni=?,direccion=?,fechaInicio=?,fechaFin=?,foto=? WHERE idcliente=?");
@@ -578,7 +599,7 @@ public class EditarCliente extends javax.swing.JFrame {
         Icon iconoFoto=new ImageIcon(foto.getImage().getScaledInstance(jPanel1.getWidth(), jPanel1.getHeight(), Image.SCALE_SMOOTH));
         jLabel12.setIcon(iconoFoto);
         jLabel12.setVisible(true);
-
+        //ruta.flush();
         ruta=webcam.getImage();
     }//GEN-LAST:event_jButton3ActionPerformed
 

@@ -514,7 +514,7 @@ public class DatosCliente extends javax.swing.JFrame {
         java.sql.Date fechaFin=new java.sql.Date(fF.getTime());
         String foto=dni+".jpg";
         
-        File salidaImagen=new File("C:\\Users\\javie\\Desktop\\ImagenesPrueba\\"+dni+".jpg");
+        File salidaImagen=new File("C:\\Users\\Evaristo\\Desktop\\FOTOSGIMNASIO\\"+dni+".jpg");//C:\\Users\\Evaristo\\Desktop\\FOTOSGIMNASIO\\
         ImageIO.write(ruta, "jpg", salidaImagen);
         
         
