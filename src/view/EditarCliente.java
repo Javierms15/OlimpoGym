@@ -553,7 +553,7 @@ public class EditarCliente extends javax.swing.JFrame {
         //File archivo=buscar(foto,carpeta);
         //ruta=ImageIO.read(archivo);
         //ruta=ImageIO.read(new File("C:\\Users\\javie\\Desktop\\ImagenesPrueba\\"+dni+".jpg"));
-        File salidaImagen=new File("C:\\Users\\Evaristo\\Desktop\\FOTOSGIMNASIO\\"+dni+".jpg");//C:\\Users\\Evaristo\\Desktop\\FOTOSGIMNASIO\\
+        File salidaImagen=new File("C:\\Users\\javie\\Desktop\\ImagenesPrueba\\"+dni+".jpg");//C:\\Users\\Evaristo\\Desktop\\FOTOSGIMNASIO\\
         //ruta=ImageIO.read(salidaImagen);
         ImageIO.write(ruta, "jpg", salidaImagen);
         
