@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,6 +28,7 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import olimpogym.Config;
 
 /**
  *
@@ -41,6 +41,7 @@ public class EditarCliente extends javax.swing.JFrame {
      */
     public EditarCliente() {
         initComponents();
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setIconImage(new ImageIcon(getClass().getResource("/olimpogym/logo.jpeg")).getImage());
         jButton5.setIcon(new ImageIcon(getClass().getResource("/olimpogym/apagar.png")));
         jButton3.setIcon(new ImageIcon(getClass().getResource("/olimpogym/camara.png")));
@@ -63,17 +64,40 @@ public class EditarCliente extends javax.swing.JFrame {
     int contador=0;
     Dimension dimension=new Dimension(largoCamara,anchoCamara);
     Dimension dimension1=WebcamResolution.VGA.getSize();
-    Webcam webcam=Webcam.getDefault();
-    WebcamPanel webcamPanel=new WebcamPanel(webcam,dimension,false);
-    
+    // La cámara es opcional: si no hay ninguna (o el driver falla) la ventana sigue funcionando sin fotos
+    Webcam webcam=buscarWebcam();
+    WebcamPanel webcamPanel=webcam==null ? null : new WebcamPanel(webcam,dimension,false);
+
+    private static Webcam buscarWebcam(){
+        try {
+            return Webcam.getDefault();
+        } catch (Throwable ex) {
+            Logger.getLogger(EditarCliente.class.getName()).log(Level.WARNING, "No se pudo inicializar la cámara", ex);
+            return null;
+        }
+    }
+
     public void setUpCamara(){
+        jLabel12.setVisible(false);
+        if(webcam==null){
+            jLabel11.setText("No se detecta ninguna cámara");
+            jButton3.setEnabled(false);
+            jButton4.setEnabled(false);
+            jButton5.setEnabled(false);
+            return;
+        }
         webcam.setViewSize(dimension1);
         webcamPanel.setFillArea(true);
         jPanel1.setLayout(new FlowLayout());
         jPanel1.add(webcamPanel);
         jLabel11.setText(webcam.toString());
         apagarBotonesCamara();
-        jLabel12.setVisible(false);
+    }
+
+    private void pararCamara(){
+        if(webcamPanel!=null){
+            webcamPanel.stop();
+        }
     }
     
     public void apagarBotonesCamara(){
@@ -111,29 +135,38 @@ public class EditarCliente extends javax.swing.JFrame {
     
     
     public void Connect(){
-        
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            try  {
-                con=DriverManager.getConnection("jdbc:mysql://localhost/pruebaparcial", "root", "root");
-            } catch (SQLException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            con=Config.conectar();
+        } catch (SQLException ex) {
+            Logger.getLogger(EditarCliente.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this,
+                    "No se pudo conectar con la base de datos:\n" + ex.getMessage(),
+                    "Error de conexión", JOptionPane.ERROR_MESSAGE);
         }
-            
     }
-    
+
     public void Disconnect(){
         try {
-            rs.close();
-            pst.close();
-            con.close();
+            if(rs!=null){
+                rs.close();
+            }
+            if(pst!=null){
+                pst.close();
+            }
+            if(con!=null){
+                con.close();
+            }
         } catch (SQLException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EditarCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+    }
+
+    /** Vuelve a la pantalla principal liberando cámara y conexión de esta ventana. */
+    private void volver(){
+        pararCamara();
+        Disconnect();
+        new MainFrame().setVisible(true);
+        dispose();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -511,52 +544,44 @@ public class EditarCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        MainFrame m = new MainFrame();
-        m.setVisible(true);
-        this.setVisible(false);
-        webcamPanel.stop();
+        volver();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-      private static File buscar(String archivoABuscar, File directorio) {
-    File[] archivos = directorio.listFiles();
-    for (File archivo : archivos) {
-        if (archivo.getName().equals(archivoABuscar)) {
-            return archivo;
-        }
-        if (archivo.isDirectory()) {
-            File resultadoRecursion = buscar(archivoABuscar, archivo);
-            if (resultadoRecursion != null) {
-                return resultadoRecursion;
-            }
-        }
-    }
-    return null;
-}
-    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        int precioMatricula;
+        int telefono;
+        try {
+            precioMatricula=Integer.parseInt(jTextField4.getText().trim());
+            telefono=Integer.parseInt(jTextField5.getText().trim());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "El precio de matrícula y el teléfono deben ser números",
+                    "Datos incorrectos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        Date fI=jDateChooser1.getDate();
+        Date fF=jDateChooser2.getDate();
+        String dni=jTextField6.getText().trim();
+        if(dni.isEmpty() || fI==null || fF==null){
+            JOptionPane.showMessageDialog(this, "Rellene el DNI y las fechas de inicio y fin",
+                    "Datos incorrectos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         try {
         String nombre=jTextField1.getText();
         String apellidos=jTextField2.getText();
         String estatus=jTextField3.getText();
-        int precioMatricula=Integer.parseInt(jTextField4.getText());
-        int telefono=Integer.parseInt(jTextField5.getText());
-        String dni=jTextField6.getText();
         String direccion=jTextField7.getText();
-        Date fI=jDateChooser1.getDate();
-        Date fF=jDateChooser2.getDate();
         java.sql.Date fechaInicio=new java.sql.Date(fI.getTime());
         java.sql.Date fechaFin=new java.sql.Date(fF.getTime());
-        String foto=dni+".jpg";
-       // File carpeta=new File("C:\\Users\\javie\\Desktop\\ImagenesPrueba");
-        //File archivo=buscar(foto,carpeta);
-        //ruta=ImageIO.read(archivo);
-        //ruta=ImageIO.read(new File("C:\\Users\\javie\\Desktop\\ImagenesPrueba\\"+dni+".jpg"));
-        File salidaImagen=new File("C:\\Users\\javie\\Desktop\\ImagenesPrueba\\"+dni+".jpg");//C:\\Users\\Evaristo\\Desktop\\FOTOSGIMNASIO\\
-        //ruta=ImageIO.read(salidaImagen);
-        ImageIO.write(ruta, "jpg", salidaImagen);
-        
+
+        // La foto es opcional: solo se guarda si el cliente tiene una (existente o recién tomada).
+        // Si se cambió el DNI, la foto pasa a llamarse con el DNI nuevo.
+        String foto="";
+        if(ruta!=null){
+            ImageIO.write(ruta, "jpg", Config.fotoDe(dni));
+            foto=dni+".jpg";
+        }
+
         pst=con.prepareStatement("UPDATE cliente SET nombre=?,apellidos=?,estatus=?,precioMatricula=?,telefono=?,dni=?,direccion=?,fechaInicio=?,fechaFin=?,foto=? WHERE idcliente=?");
         pst.setString(1,nombre);
         pst.setString(2,apellidos);
@@ -575,17 +600,14 @@ public class EditarCliente extends javax.swing.JFrame {
         if(k==1){
             JOptionPane.showMessageDialog(this, "Cliente actualizado correctamente!");
         }else{
-            JOptionPane.showMessageDialog(this, "Error al crear el nuevo cliente");
+            JOptionPane.showMessageDialog(this, "Error al actualizar el cliente");
         }
-            
-        MainFrame m = new MainFrame();
-        m.setVisible(true);
-        this.setVisible(false);
-        webcamPanel.stop();
-        } catch (SQLException ex) {
+
+        volver();
+        } catch (SQLException | IOException ex) {
             Logger.getLogger(EditarCliente.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(EditarCliente.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "No se pudo guardar el cliente:\n" + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
       
         
@@ -624,8 +646,7 @@ public class EditarCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-        webcamPanel.stop();
+        pararCamara();
         apagarBotonesCamara();
         jButton4.setEnabled(true);
     }//GEN-LAST:event_jButton5ActionPerformed

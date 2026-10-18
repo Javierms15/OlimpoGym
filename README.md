@@ -1,95 +1,123 @@
-Sure! Adding emojis can make your README more engaging and visually appealing. Here's a revised version of the README with emojis:
+# 🏋️‍♂️ Olimpo NGR Gym — gestión de clientes
 
----
+Aplicación de escritorio en Java (Swing) para gestionar los clientes de un gimnasio: alta, edición, baja, búsqueda,
+filtro por fecha de fin de cuota, exportación a CSV/Excel y foto del cliente con la webcam.
 
-# 🏋️‍♂️ Olimpo NGR Gym Client Management System
+## ✨ Funcionalidades
 
-## 📜 Project Description
+- **Clientes**: nombre, apellidos, estatus, matrícula, teléfono, DNI, dirección, fecha de inicio y fin.
+- **Búsqueda** por cualquier campo y **filtro** por rango de fecha de fin.
+- **📸 Webcam**: foto del cliente (opcional; se guarda como `<DNI>.jpg`).
+- **Exportar a Excel**: CSV con nombre, apellidos, estatus, teléfono y fecha fin (UTF-8, se abre bien en Excel).
+- **🗄️ MySQL** como base de datos.
 
-The **Olimpo NGR Gym Client Management System** is a Java-based desktop application designed to manage client information for a gym. The application allows users to input and store client details such as name, contact information, membership status, and more. Additionally, it integrates webcam functionality to capture and save client photos directly from the application interface.
+## 🚀 Demo en local (Windows)
 
-## ✨ Features
+Guía para arrancar el proyecto en un ordenador cualquiera y enseñarlo, sin tocar nada de producción.
+Usa una base de datos MySQL propia en Docker con **clientes ficticios**.
 
-- **Client Information Management**: Add and store client details including name, address, phone number, and membership status.
-- **📸 Webcam Integration**: Capture and save client photos using a connected webcam.
-- **🗄️ Database Connectivity**: Store client data in a MySQL database for persistent storage.
-- **🖥️ User-Friendly Interface**: Intuitive GUI built with Java Swing for easy navigation and data entry.
+### Requisitos
 
-## 🛠️ Prerequisites
+- **JDK 8 o superior** (`javac -version` debe funcionar, o tener definido `JAVA_HOME`).
+- **Docker Desktop** abierto y en marcha (para la base de datos).
+- **Internet** la primera vez (descarga la imagen de MySQL y las librerías).
+- Webcam: opcional.
 
-Before you begin, ensure you have met the following requirements:
+### Pasos
 
-- ☕ Java Development Kit (JDK) 8 or later
-- 🐘 Apache Maven (for dependency management)
-- 🐬 MySQL Server
-- 📷 Webcam connected to your computer
-- 🌐 Internet connection (for downloading dependencies)
+1. Clona el repositorio y entra en la carpeta:
 
-## 🚀 Setup Instructions
-
-1. **Clone the Repository**:
-   ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   ```powershell
+   git clone https://github.com/Javierms15/OlimpoGym.git
+   cd OlimpoGym
    ```
 
-2. **Database Setup**:
-   - Create a MySQL database named `pruebaparcial`.
-   - Use the following SQL command to create the `cliente` table:
-     ```sql
-     CREATE TABLE cliente (
-       id INT AUTO_INCREMENT PRIMARY KEY,
-       nombre VARCHAR(255),
-       apellidos VARCHAR(255),
-       estatus VARCHAR(255),
-       precioMatricula INT,
-       telefono INT,
-       dni VARCHAR(255),
-       direccion VARCHAR(255),
-       fechaInicio DATE,
-       fechaFin DATE,
-       foto VARCHAR(255)
-     );
-     ```
-   - Update the database connection details in the `Connect` method of `DatosCliente.java` if necessary.
+2. Arranca todo con un solo comando:
 
-3. **Build the Project**:
-   - Navigate to the project directory and build the project using Maven:
-     ```bash
-     mvn clean install
-     ```
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File local\run-local.ps1
+   ```
 
-4. **Run the Application**:
-   - Execute the application using the following command:
-     ```bash
-     java -jar target/<your-jar-file>.jar
-     ```
+   El script, en este orden:
+   1. Levanta MySQL 8 en Docker (`local/docker-compose.yml`) con la BD `pruebaparcial`, el esquema
+      (`local/init/01-schema.sql`) y 5 clientes ficticios (`local/init/02-datos-demo.sql`).
+   2. Descarga las librerías a `lib/` si faltan.
+   3. Compila a `build/` y abre la aplicación.
 
-## 🎮 Usage
+   La primera vez tarda unos minutos (imagen de ~600 MB); las siguientes, unos segundos.
 
-- Launch the application and use the interface to enter client details.
-- Use the webcam buttons to capture and save client photos.
-- Save the client information to the database by clicking the "Guardar" button.
-- Navigate back to the main menu using the "Atrás" button.
+3. Se abre la ventana **OLIMPO NGR GYM** con la lista de clientes de ejemplo.
 
-## 🐛 Troubleshooting
+### Guion sugerido para la demo
 
-- Ensure your webcam is properly connected and recognized by the system.
-- Verify database connection details and ensure the MySQL server is running.
-- Check for any missing dependencies and resolve them using Maven.
+| Qué enseñar | Cómo |
+|---|---|
+| Buscar | Elige un campo en el desplegable (p. ej. *Apellidos*), escribe parte del texto y pulsa **Buscar**. |
+| Filtrar por vencimiento | Elige *Fecha de* y *Fecha hasta* y pulsa **Filtrar** (filtra por fecha de fin de cuota). |
+| Nuevo cliente | **Nuevo cliente** → rellena los datos → **Encender** cámara → **Foto** → **Guardar**. Sin cámara se puede guardar igualmente. |
+| Editar | Selecciona una fila → **Editar cliente** → cambia datos o repite la foto → **Guardar**. |
+| Eliminar | Selecciona una fila → **Eliminar cliente** → confirma. |
+| Exportar | **Exportar a Excel** → elige carpeta y nombre → se genera un `.csv` que abre Excel. |
 
-## 🤝 Contributing
+Las fotos que hagas se guardan en la carpeta `fotos/` del proyecto (no se sube a git).
 
-Contributions are welcome! Please fork the repository and submit a pull request for any improvements or bug fixes.
+### Parar y reiniciar
 
-## 📄 License
+```bash
+docker compose -f local/docker-compose.yml down        # parar la BD (los datos se conservan)
+docker compose -f local/docker-compose.yml down -v     # parar y borrar los datos: vuelve a los 5 clientes de ejemplo
+```
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+Para volver a abrir la app más adelante basta con repetir el paso 2. Si solo quieres la base de datos
+(por ejemplo, para lanzar la app desde NetBeans o IntelliJ):
 
-## 📧 Contact
+```powershell
+powershell -ExecutionPolicy Bypass -File local\run-local.ps1 -SoloBD
+```
 
-For any inquiries or support, please contact Javier Martín Sendra at [javiervader15@gmail.com].
+## ⚙️ Configuración
 
----
+Todo tiene valor por defecto para el entorno local; para otro entorno se cambia con propiedad `-D` o variable de entorno:
 
-Feel free to replace placeholders like `<repository-url>`, `<repository-directory>`, and `<your-jar-file>` with actual values specific to your project. Additionally, update the contact information and any other sections as needed to reflect the specifics of your project. Enjoy your cool README! 😎
+| Qué | Propiedad | Variable de entorno | Por defecto |
+|---|---|---|---|
+| URL de la BD | `olimpo.db.url` | `OLIMPO_DB_URL` | `jdbc:mysql://localhost/pruebaparcial` |
+| Usuario | `olimpo.db.user` | `OLIMPO_DB_USER` | `root` |
+| Contraseña | `olimpo.db.password` | `OLIMPO_DB_PASSWORD` | `root` |
+| Carpeta de fotos | `olimpo.fotos` | `OLIMPO_FOTOS` | `fotos` (junto a donde se ejecuta) |
+
+> ⚠️ Antes las fotos se guardaban en una carpeta fija del escritorio (`...\Desktop\FOTOSGIMNASIO`). Si se despliega esta
+> versión en el equipo del gimnasio, hay que indicar esa carpeta con `OLIMPO_FOTOS` para seguir viendo las fotos antiguas.
+
+## 🗃️ Esquema de la base de datos
+
+```sql
+CREATE TABLE cliente (
+  idcliente       INT AUTO_INCREMENT PRIMARY KEY,
+  Nombre          VARCHAR(255),
+  Apellidos       VARCHAR(255),
+  Estatus         VARCHAR(255),
+  PrecioMatricula INT,
+  Telefono        INT,
+  DNI             VARCHAR(255),
+  Direccion       VARCHAR(255),
+  fechaInicio     DATE,
+  fechaFin        DATE,
+  foto            VARCHAR(255)
+);
+```
+
+## 🧰 Desde NetBeans / IntelliJ
+
+El proyecto es de NetBeans (Ant): `nbproject/project.properties` apunta a las librerías de `lib/` (las descarga
+`run-local.ps1`). Clase principal: `olimpogym.OlimpoGym`.
+
+## 🐛 Problemas habituales
+
+- **"No se pudo conectar con la base de datos"**: comprueba que Docker está en marcha y que el contenedor
+  `olimpo-mysql` está *healthy* (`docker ps`), o que el puerto 3306 no lo usa otro MySQL.
+- **"No se detecta ninguna cámara"**: la app funciona igual, simplemente sin fotos.
+
+## 📧 Autor
+
+Javier Martín Sendra — javiervader15@gmail.com

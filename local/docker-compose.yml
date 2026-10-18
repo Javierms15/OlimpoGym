@@ -1,0 +1,26 @@
+# Base de datos MySQL local para probar OlimpoGym.
+#   docker compose up -d     -> arranca (la primera vez crea el esquema y los datos de ejemplo)
+#   docker compose down      -> para (los datos se conservan en el volumen)
+#   docker compose down -v   -> para y borra los datos (vuelve a empezar de cero)
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: olimpo-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: pruebaparcial
+      TZ: Europe/Madrid
+    ports:
+      - "3306:3306"
+    volumes:
+      - olimpo-mysql-data:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d:ro
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+
+volumes:
+  olimpo-mysql-data:

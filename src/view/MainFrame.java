@@ -5,40 +5,28 @@
  */
 package view;
 
-import com.aspose.cells.FileFormatType;
-import com.aspose.cells.LoadOptions;
-import com.aspose.cells.SaveFormat;
-import com.aspose.cells.Workbook;
-import com.opencsv.CSVWriter;
-import java.awt.Component;
 import java.awt.FileDialog;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.File;
-
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import olimpogym.Config;
 
 /**
  *
@@ -74,9 +62,15 @@ public class MainFrame extends javax.swing.JFrame {
     
     public void Disconnect(){
         try {
-            rs.close();
-            pst.close();
-            con.close();
+            if(rs!=null){
+                rs.close();
+            }
+            if(pst!=null){
+                pst.close();
+            }
+            if(con!=null){
+                con.close();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -84,59 +78,53 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     public void Connect(){
-        
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            try  {
-                con=DriverManager.getConnection("jdbc:mysql://localhost/pruebaparcial", "root", "root");
-            } catch (SQLException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (ClassNotFoundException ex) {
+            con=Config.conectar();
+        } catch (SQLException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this,
+                    "No se pudo conectar con la base de datos:\n" + ex.getMessage()
+                    + "\n\nURL: " + Config.dbUrl(),
+                    "Error de conexión", JOptionPane.ERROR_MESSAGE);
         }
-            
     }
-    
+
+    private static String formatoFecha(Timestamp t, SimpleDateFormat f){
+        return t == null ? "" : f.format(new java.util.Date(t.getTime()));
+    }
+
+    /** Vuelca en la tabla las filas del ResultSet (idcliente, nombre, ..., fechaFin). */
+    private void llenarTabla(ResultSet rs) throws SQLException {
+        DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
+        df.setRowCount(0);
+        SimpleDateFormat f=new SimpleDateFormat("dd-MM-yyyy");
+        while(rs.next()){
+            Vector<Object> fila=new Vector<>();
+            fila.add(rs.getInt("idcliente"));
+            fila.add(rs.getString("Nombre"));
+            fila.add(rs.getString("Apellidos"));
+            fila.add(rs.getString("Estatus"));
+            fila.add(rs.getInt("PrecioMatricula"));
+            fila.add(rs.getInt("Telefono"));
+            fila.add(rs.getString("DNI"));
+            fila.add(rs.getString("Direccion"));
+            fila.add(formatoFecha(rs.getTimestamp("fechaInicio"), f));
+            fila.add(formatoFecha(rs.getTimestamp("fechaFin"), f));
+            df.addRow(fila);
+        }
+    }
+
     public void mostrarAllClientes(){
-        
-        int q;
+        if(con==null){
+            return;
+        }
         try {
             pst=con.prepareStatement("SELECT * FROM cliente");
             rs=pst.executeQuery();
-            ResultSetMetaData rss=rs.getMetaData();
-            q=rss.getColumnCount();
-            
-            DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
-            df.setRowCount(0);
-            SimpleDateFormat f=new SimpleDateFormat("dd-MM-yyyy");
-            while(rs.next()){
-                Vector v2=new Vector();
-                for(int i =1; i<=q;i++){
-                    v2.add(rs.getInt("idcliente"));
-                    v2.add(rs.getString("Nombre"));
-                    v2.add(rs.getString("Apellidos"));
-                    v2.add(rs.getString("Estatus"));
-                    v2.add(rs.getInt("PrecioMatricula"));
-                    v2.add(rs.getInt("Telefono"));
-                    v2.add(rs.getString("DNI"));
-                    v2.add(rs.getString("Direccion"));
-                    Timestamp timestamp = rs.getTimestamp("fechaInicio");   
-                    java.util.Date fechaInicio = new java.util.Date(timestamp.getTime());
-                    v2.add(f.format(fechaInicio));
-                    Timestamp timestamp1 = rs.getTimestamp("fechaFin");   
-                    java.util.Date fechaFin = new java.util.Date(timestamp1.getTime());
-                    v2.add(f.format(fechaFin));
-                   
-                }
-                df.addRow(v2);
-            }
-            
-            
+            llenarTabla(rs);
         } catch (SQLException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
 
     /**
@@ -444,219 +432,174 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /** Escapa un valor para CSV (comillas si lleva coma, comillas o salto de línea). */
+    private static String csv(String valor){
+        if(valor==null){
+            return "";
+        }
+        if(valor.contains(",") || valor.contains("\"") || valor.contains("\n") || valor.contains("\r")){
+            return "\"" + valor.replace("\"", "\"\"") + "\"";
+        }
+        return valor;
+    }
+
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-
-        String filename = "E:\\Excel exportado.csv";
-        /* JFileChooser fc=new JFileChooser();
-        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-        Component parent = null;
-        int returnVal = fc.showSaveDialog(parent);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-
-            // obtener ruta
-            String selectPath = fc.getSelectedFile().getPath();
-            System.out.println ("El directorio que elija es:" + selectPath);
+        if(con==null){
+            return;
         }
-        */
-        FileDialog dialogoArchivo;
-        dialogoArchivo = new FileDialog(this, "Seleccione lugar de guardado",FileDialog.SAVE);
+        FileDialog dialogoArchivo = new FileDialog(this, "Seleccione lugar de guardado",FileDialog.SAVE);
+        dialogoArchivo.setFile("clientes.csv");
         dialogoArchivo.setVisible(true);
-        /* Validar que se haya Seleccionado un Archivo*/
-        String directorio = dialogoArchivo.getDirectory();
-        String nombreArchivo =dialogoArchivo.getFile();
-        String rutatotal = directorio + nombreArchivo+".csv";
-        filename=rutatotal;
-
-        try {
-            FileWriter fw=new FileWriter(filename);
-            //CSVWriter writer=new CSVWriter(fw);
-            //pst=con.prepareStatement("SELECT * FROM cliente");
-            rs=pst.executeQuery();
-            fw.append("NOMBRE, APELLIDOS, ESTATUS, TELEFONO, FECHAFIN");
-            fw.append("\n");
-            SimpleDateFormat f=new SimpleDateFormat("dd-MM-yyyy");
-            // List<String[]> columnas = new ArrayList<String[]>();
-            //String[] c={"NOMBRE","APELLIDOS","ESTATUS","TELEFONO","FECHAFIN"};
-            //columnas.add(c);
-            // writer.writeAll(columnas);
-            // List<String[]> data = new ArrayList<String[]>();
-
-            while(rs.next()){
-
-                fw.append(rs.getString(2));
-                fw.append(", ");
-                fw.append(rs.getString(3));
-                fw.append(", ");
-                fw.append(rs.getString(4));
-                fw.append(", ");
-                fw.append(String.valueOf( rs.getInt(6)));
-                fw.append(", ");
-                fw.append(String.valueOf(f.format(rs.getDate(10))));
-                fw.append("\n");
-
-                //String[] user={rs.getString(2),rs.getString(3),String.valueOf( rs.getInt(6)),String.valueOf(f.format(rs.getDate(10)))};
-                //data.add(user);
-
-            }
-            //writer.writeAll(data);
-
-            JOptionPane.showMessageDialog(this,"Archivo Excel generado con éxito");
-            fw.flush();
-            fw.close();
-            // Opening CSV Files
-            // Creating CSV LoadOptions object
-            //LoadOptions loadOptions = new LoadOptions(FileFormatType.CSV);
-            // Creating an Workbook object with CSV file path and the loadOptions
-            // object
-            //Workbook workbook = new Workbook("E:\\Excel exportado.csv", loadOptions);
-            //workbook.save("E:\\Excel exportado.xlsx" , SaveFormat.XLSX);
-
-        } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        String nombreArchivo = dialogoArchivo.getFile();
+        if(nombreArchivo==null){
+            return; // el usuario canceló
         }
+        if(!nombreArchivo.toLowerCase().endsWith(".csv")){
+            nombreArchivo += ".csv";
+        }
+        File destino = new File(dialogoArchivo.getDirectory(), nombreArchivo);
 
+        SimpleDateFormat f=new SimpleDateFormat("dd-MM-yyyy");
+        try (PreparedStatement ps=con.prepareStatement("SELECT * FROM cliente");
+             ResultSet datos=ps.executeQuery();
+             Writer fw=new OutputStreamWriter(Files.newOutputStream(destino.toPath()), StandardCharsets.UTF_8)) {
+            fw.write('﻿'); // BOM para que Excel respete tildes y eñes
+            fw.write("NOMBRE,APELLIDOS,ESTATUS,TELEFONO,FECHAFIN\n");
+            while(datos.next()){
+                fw.write(csv(datos.getString("Nombre")));
+                fw.write(",");
+                fw.write(csv(datos.getString("Apellidos")));
+                fw.write(",");
+                fw.write(csv(datos.getString("Estatus")));
+                fw.write(",");
+                fw.write(String.valueOf(datos.getInt("Telefono")));
+                fw.write(",");
+                fw.write(formatoFecha(datos.getTimestamp("fechaFin"), f));
+                fw.write("\n");
+            }
+            fw.flush();
+            JOptionPane.showMessageDialog(this,"Archivo Excel generado con éxito:\n" + destino.getAbsolutePath());
+        } catch (IOException | SQLException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this,"No se pudo generar el archivo:\n" + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
+        int fila=jTable1.getSelectedRow();
+        if(fila<0){
+            JOptionPane.showMessageDialog(this, "Seleccione primero un cliente de la tabla");
+            return;
+        }
         int pregunta=JOptionPane.showConfirmDialog(this, "¿Desea eliminar este cliente?","CONFIRMACIÓN",JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE);
-        if(pregunta==0){
+        if(pregunta==JOptionPane.YES_OPTION){
             try {
-                // TODO add your handling code here:
-
-                DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
-                int fila=jTable1.getSelectedRow();
                 int id=(int) jTable1.getValueAt(fila, 0);
                 pst=con.prepareStatement("DELETE FROM cliente WHERE idcliente =?");
                 pst.setInt(1,id);
                 int k=pst.executeUpdate();
-                df.removeRow(fila);
                 if(k==1){
                     JOptionPane.showMessageDialog(this, "Cliente eliminado con éxito!");
-                    mostrarAllClientes();
-
                 }else{
                     JOptionPane.showMessageDialog(this, "Fallo al eliminar el cliente!");
                 }
-
+                mostrarAllClientes();
             } catch (SQLException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Fallo al eliminar el cliente:\n" + ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private String celda(int fila, int columna){
+        Object valor=jTable1.getValueAt(fila, columna);
+        return valor==null ? "" : valor.toString();
+    }
+
+    //editar cliente
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int fila=jTable1.getSelectedRow();
+        if(fila<0){
+            JOptionPane.showMessageDialog(this, "Seleccione primero un cliente de la tabla");
+            return;
+        }
         try {
-            // TODO add your handling code here:
-            EditarCliente datos=new EditarCliente();
-            DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
-            int fila=jTable1.getSelectedRow();
             int id=(int) jTable1.getValueAt(fila, 0);
             pst=con.prepareStatement("SELECT * FROM cliente WHERE idcliente =?");
             pst.setInt(1,id);
             rs=pst.executeQuery();
 
-            /*
-            ImageIcon f=new ImageIcon(getClass().getResource("../olimpogym/OlimpoN.jpeg"));
-            Image image=f.getImage();
-            Image imagenEscala=image.getScaledInstance(jLabel4.getWidth(), jLabel4.getHeight(), Image.SCALE_SMOOTH);
-            ImageIcon result=new ImageIcon(imagenEscala);
-            datos.jLabel13.setIcon(result);
-            */
-            datos.jTextField1.setText(jTable1.getValueAt(fila, 1).toString());
-            datos.jTextField2.setText(jTable1.getValueAt(fila, 2).toString());
-            datos.jTextField3.setText(jTable1.getValueAt(fila, 3).toString());
-            datos.jTextField4.setText(jTable1.getValueAt(fila, 4).toString());
-            datos.jTextField5.setText(jTable1.getValueAt(fila, 5).toString());
-            datos.jTextField6.setText(jTable1.getValueAt(fila, 6).toString());
-            datos.jTextField7.setText(jTable1.getValueAt(fila, 7).toString());
-            datos.idcliente=Integer.parseInt(jTable1.getValueAt(fila, 0).toString());
+            EditarCliente datos=new EditarCliente();
+            datos.jTextField1.setText(celda(fila, 1));
+            datos.jTextField2.setText(celda(fila, 2));
+            datos.jTextField3.setText(celda(fila, 3));
+            datos.jTextField4.setText(celda(fila, 4));
+            datos.jTextField5.setText(celda(fila, 5));
+            datos.jTextField6.setText(celda(fila, 6));
+            datos.jTextField7.setText(celda(fila, 7));
+            datos.idcliente=id;
             if(rs.next()){
-                Timestamp timestamp = rs.getTimestamp("fechaInicio");
-                java.util.Date fechaInicio = new java.util.Date(timestamp.getTime());
-                Timestamp timestamp1 = rs.getTimestamp("fechaFin");
-                java.util.Date fechaFin = new java.util.Date(timestamp1.getTime());
-                datos.jDateChooser1.setDate(fechaInicio);
-                datos.jDateChooser2.setDate(fechaFin);
-                File carpeta=new File("C:\\Users\\javie\\Desktop\\ImagenesPrueba");//"C:\\Users\\Evaristo\\Desktop\\FOTOSGIMNASIO"
-                    File foto=buscar(jTable1.getValueAt(fila, 6).toString()+".jpg",carpeta);
-                    Image img=ImageIO.read(foto);
-                    Image imagenEscala=img.getScaledInstance(datos.jLabel12.getWidth(), datos.jLabel12.getHeight(), Image.SCALE_SMOOTH);
-                    ImageIcon f=new ImageIcon(imagenEscala);
-                    datos.jLabel12.setIcon(f);
+                Timestamp inicio = rs.getTimestamp("fechaInicio");
+                Timestamp fin = rs.getTimestamp("fechaFin");
+                if(inicio!=null){
+                    datos.jDateChooser1.setDate(new java.util.Date(inicio.getTime()));
+                }
+                if(fin!=null){
+                    datos.jDateChooser2.setDate(new java.util.Date(fin.getTime()));
+                }
+            }
+            datos.dni=datos.jTextField6.getText();
+
+            // La foto es opcional: puede no existir (clientes antiguos o sin cámara)
+            File foto=Config.fotoDe(datos.dni);
+            if(foto.isFile()){
+                try {
+                    datos.ruta=ImageIO.read(foto);
+                } catch (IOException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.WARNING, "No se pudo leer la foto " + foto, ex);
+                }
+                if(datos.ruta!=null){
+                    Image imagenEscala=datos.ruta.getScaledInstance(datos.jLabel12.getWidth(), datos.jLabel12.getHeight(), Image.SCALE_SMOOTH);
+                    datos.jLabel12.setIcon(new ImageIcon(imagenEscala));
                     datos.jLabel12.setVisible(true);
                 }
-            datos.dni=datos.jTextField6.getText();
-            datos.ruta=ImageIO.read(new File("C:\\Users\\javie\\Desktop\\ImagenesPrueba\\"+datos.dni+".jpg"));
-                datos.setVisible(true);
-                this.setVisible(false);
-            } catch (SQLException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
+            datos.setVisible(true);
+            cerrar();
+        } catch (SQLException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "No se pudo cargar el cliente:\n" + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     //añadir nuevo cliente
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-
         DatosCliente datos=new DatosCliente();
         datos.setVisible(true);
-        this.setVisible(false);
+        cerrar();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    /** Cierra esta ventana y libera su conexión (la ventana siguiente abre la suya). */
+    private void cerrar(){
+        Disconnect();
+        dispose();
+    }
 
     //filtrar
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
         try{
             java.util.Date fI=jDateChooser1.getDate();
-
             java.util.Date fF=jDateChooser2.getDate();
 
-            int q;
             if(fI!=null && fF !=null){
-                java.sql.Date fechaDe=new java.sql.Date(fI.getTime());
-                java.sql.Date fechaHasta=new java.sql.Date(fF.getTime());
-                SimpleDateFormat f1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                f1.format(fechaDe);
-                f1.format(fechaHasta);
-
                 pst=con.prepareStatement("SELECT * FROM cliente WHERE  fechaFin >= ? AND fechaFin <= ? ORDER BY fechaFin");
-                pst.setDate(1, fechaDe);
-                pst.setDate(2, fechaHasta);
+                pst.setDate(1, new java.sql.Date(fI.getTime()));
+                pst.setDate(2, new java.sql.Date(fF.getTime()));
                 rs=pst.executeQuery();
-                ResultSetMetaData rss=rs.getMetaData();
-                q=rss.getColumnCount();
-
-                DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
-                df.setRowCount(0);
-                SimpleDateFormat f=new SimpleDateFormat("dd-MM-yyyy");
-                while(rs.next()){
-                    Vector v2=new Vector();
-                    for(int i =1; i<=q;i++){
-                        v2.add(rs.getInt("idcliente"));
-                        v2.add(rs.getString("Nombre"));
-                        v2.add(rs.getString("Apellidos"));
-                        v2.add(rs.getString("Estatus"));
-                        v2.add(rs.getInt("PrecioMatricula"));
-                        v2.add(rs.getInt("Telefono"));
-                        v2.add(rs.getString("DNI"));
-                        v2.add(rs.getString("Direccion"));
-                        Timestamp timestamp = rs.getTimestamp("fechaInicio");
-                        java.util.Date fechaInicio = new java.util.Date(timestamp.getTime());
-                        v2.add(f.format(fechaInicio));
-                        Timestamp timestamp1 = rs.getTimestamp("fechaFin");
-                        java.util.Date fechaFin = new java.util.Date(timestamp1.getTime());
-                        v2.add(f.format(fechaFin));
-
-                    }
-                    df.addRow(v2);
-                }
+                llenarTabla(rs);
             }else{
                 mostrarAllClientes();
             }
@@ -667,96 +610,46 @@ public class MainFrame extends javax.swing.JFrame {
 
     //buscar
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        int q;
         try{
             String info=jComboBox1.getSelectedItem().toString();
+            String texto=jTextField1.getText().trim();
             if(info.equals("IdCliente")){
-                int id=Integer.parseInt(jTextField1.getText());
                 pst=con.prepareStatement("SELECT * FROM cliente WHERE idcliente =?");
-                pst.setInt(1,id);
+                pst.setInt(1,Integer.parseInt(texto));
             }else if(info.equals("Nombre")){
-                String n= jTextField1.getText();
                 pst=con.prepareStatement("SELECT * FROM cliente WHERE Nombre LIKE ?");
-                pst.setString(1,n);
+                pst.setString(1,"%" + texto + "%");
             }else if(info.equals("Apellidos")){
-                String n= jTextField1.getText();
                 pst=con.prepareStatement("SELECT * FROM cliente WHERE Apellidos LIKE ?");
-                pst.setString(1,n);
+                pst.setString(1,"%" + texto + "%");
             }else if(info.equals("Estatus")){
-                String n= jTextField1.getText();
                 pst=con.prepareStatement("SELECT * FROM cliente WHERE Estatus LIKE ?");
-                pst.setString(1,n);
+                pst.setString(1,"%" + texto + "%");
             }else if(info.equals("PrecioMatricula")){
-                int id=Integer.parseInt(jTextField1.getText());
                 pst=con.prepareStatement("SELECT * FROM cliente WHERE PrecioMatricula =?");
-                pst.setInt(1,id);
+                pst.setInt(1,Integer.parseInt(texto));
             }else if(info.equals("Telefono")){
-                int id=Integer.parseInt(jTextField1.getText());
                 pst=con.prepareStatement("SELECT * FROM cliente WHERE Telefono =?");
-                pst.setInt(1,id);
+                pst.setInt(1,Integer.parseInt(texto));
             }else if(info.equals("DNI")){
-                String n= jTextField1.getText();
                 pst=con.prepareStatement("SELECT * FROM cliente WHERE DNI LIKE ?");
-                pst.setString(1,n);
+                pst.setString(1,"%" + texto + "%");
             }else if(info.equals("Direccion")){
-                String n= jTextField1.getText();
                 pst=con.prepareStatement("SELECT * FROM cliente WHERE Direccion LIKE ?");
-                pst.setString(1,n);
+                pst.setString(1,"%" + texto + "%");
             }else{
                 pst=con.prepareStatement("SELECT * FROM cliente");
             }
 
             rs=pst.executeQuery();
-            ResultSetMetaData rss=rs.getMetaData();
-            q=rss.getColumnCount();
-
-            DefaultTableModel df= (DefaultTableModel)jTable1.getModel();
-            df.setRowCount(0);
-            SimpleDateFormat f=new SimpleDateFormat("dd-MM-yyyy");
-            while(rs.next()){
-                Vector v2=new Vector();
-                for(int i =1; i<=q;i++){
-                    v2.add(rs.getInt("idcliente"));
-                    v2.add(rs.getString("Nombre"));
-                    v2.add(rs.getString("Apellidos"));
-                    v2.add(rs.getString("Estatus"));
-                    v2.add(rs.getInt("PrecioMatricula"));
-                    v2.add(rs.getInt("Telefono"));
-                    v2.add(rs.getString("DNI"));
-                    v2.add(rs.getString("Direccion"));
-                    Timestamp timestamp = rs.getTimestamp("fechaInicio");
-                    java.util.Date fechaInicio = new java.util.Date(timestamp.getTime());
-                    v2.add(f.format(fechaInicio));
-                    Timestamp timestamp1 = rs.getTimestamp("fechaFin");
-                    java.util.Date fechaFin = new java.util.Date(timestamp1.getTime());
-                    v2.add(f.format(fechaFin));
-
-                }
-                df.addRow(v2);
-            }
-
+            llenarTabla(rs);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Para este campo hay que escribir un número",
+                    "Búsqueda", JOptionPane.WARNING_MESSAGE);
         } catch (SQLException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private static File buscar(String archivoABuscar, File directorio) {
-    File[] archivos = directorio.listFiles();
-    for (File archivo : archivos) {
-        if (archivo.getName().equals(archivoABuscar)) {
-            return archivo;
-        }
-        if (archivo.isDirectory()) {
-            File resultadoRecursion = buscar(archivoABuscar, archivo);
-            if (resultadoRecursion != null) {
-                return resultadoRecursion;
-            }
-        }
-    }
-    return null;
-}
     
     /**
      * @param args the command line arguments
